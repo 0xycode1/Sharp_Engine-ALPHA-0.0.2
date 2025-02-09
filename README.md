@@ -11,6 +11,6 @@
 
 ![image](https://github.com/user-attachments/assets/ed104acf-eca1-4a64-b5c6-77ccad72a207)
 
-All the models where taken here **for free**: https://www.models-resource.com/
+All the models have been taken there **for free**: https://www.models-resource.com/
 
 # © Oxygen1 2025 ALL RIGHTS RESERVED
