@@ -11,10 +11,16 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________________________________________________________________________________________________________
 ### The engine provides tools to modify the properties of loaded object(s) (*rotation (XYZ), size (XYZ), etc*)
-#### Libraries required: GLFW (OpenGL), ASSIMP, IMGUI, GLAD, GLEW, GLM, GLUT, STB_IMAGE, KHR
-+ ONE
-+ TWO
-+ THREE
+#### Libraries required:
++ GLFW (OpenGL) [3-4]
++ Assimp
++ ImGui
++ GLAD
++ GLEW
++ GLM
++ GLUT
++ STB_IMAGE
++ KHR
 
 ![image](https://github.com/user-attachments/assets/ed104acf-eca1-4a64-b5c6-77ccad72a207)
 
