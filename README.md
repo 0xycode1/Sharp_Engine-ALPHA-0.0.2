@@ -7,7 +7,7 @@
 ![image](https://github.com/user-attachments/assets/e9a7f600-a4a6-492e-8caf-46b68649d966)
 
 ### Engine has tool to change the properties of loaded object(s) (*rotation (XYZ), size (XYZ), etc.*)
-#### Libraries required: GLFW (OpenGL), ASSIMP, IMGUI, GLAD, GLEW, GLM, GLUT, KHR
+#### Libraries required: GLFW (OpenGL), ASSIMP, IMGUI, GLAD, GLEW, GLM, GLUT, STB_IMAGE, KHR
 
 ![image](https://github.com/user-attachments/assets/ed104acf-eca1-4a64-b5c6-77ccad72a207)
 
