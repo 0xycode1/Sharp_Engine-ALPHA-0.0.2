@@ -12,12 +12,21 @@
 
 ![image](https://github.com/user-attachments/assets/ed104acf-eca1-4a64-b5c6-77ccad72a207)
 
+
+
 #### Controls: W A S D, RMB, L CTRL, SPACE, L SHIFT
 #### Alt. controls: Arrows, RMB, SPACE, R SHIFT, R CTRL
+
+
+
 
 ### ***Sharp Engine*** has a ***Verlet integration*** *object creator* and supports changing it`s color
 
 ## x(n + 1) = 2x(n) - x(n - 1) + a(n) * (Δt)^2             // (n + Δt), *n* might be = t
+
+
+
+
 
 All the models have been taken there **for free**: https://www.models-resource.com/
 
