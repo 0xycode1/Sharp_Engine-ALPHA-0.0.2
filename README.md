@@ -26,7 +26,7 @@ ________________________________________________________________________________
 
 
 
-### ***Sharp Engine*** has a ***Verlet integration*** *object creator* and supports changing it`s color
+### ***Sharp Engine*** has a ***Verlet integration*** *object creator* and supports changing it`s color:
 
 ## x(n + 1) = 2x(n) - x(n - 1) + a(n) * (Δt)^2             // (n + Δt), *n* might be = t
 ________________________________________________________________________________________________________________________________________________________________________________________________
