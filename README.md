@@ -8,7 +8,7 @@
 ### Engine has tool to change the properties of loaded object(s) (*rotation (XYZ), size (XYZ), etc.*)
 #### Libraries required: GLFW (OpenGL), ASSIMP, IMGUI, GLAD, GLEW, GLM, GLUT, KHR
 
-![Uploading image.png…]()
+![photo_5280596251471113808_y](https://github.com/user-attachments/assets/8ddf1a8b-cace-4329-8a92-6a7f19fa320a)
 
 All the models where taken here **for free**: https://www.models-resource.com/
 
