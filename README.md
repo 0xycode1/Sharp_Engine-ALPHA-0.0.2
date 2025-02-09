@@ -1,6 +1,7 @@
 # Sharp Engine [PRE-ALPHA 0.0.1]
 
-![SE logo](https://github.com/user-attachments/assets/156035ea-57d8-42f8-9555-aef302f6f77b)
+![SE logo](https://github.com/user-attachments/assets/af8632f7-37c6-4222-893e-dbc644a85c29)
+
 
 ## ***Sharp Engine*** is an *OpenGL 3-4* gametool with object loader maded by *Assimp* library 
 
