@@ -1,4 +1,5 @@
 # Sharp Engine [PRE-ALPHA 0.0.1]
+#### Prev. name: ParticleGL
 
 ![SE logo](https://github.com/user-attachments/assets/af8632f7-37c6-4222-893e-dbc644a85c29)
 
