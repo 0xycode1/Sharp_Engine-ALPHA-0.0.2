@@ -14,4 +14,7 @@
 
 All the models have been taken there **for free**: https://www.models-resource.com/
 
+#### Controls: W A S D, RMB, L CTRL, SPACE, L SHIFT
+#### Alt controls: Arrows, SPACE, R SHIFT, R CTRL
+
 # © Oxygen1 2025 ALL RIGHTS RESERVED
