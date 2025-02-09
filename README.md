@@ -17,4 +17,9 @@ All the models have been taken there **for free**: https://www.models-resource.c
 #### Controls: W A S D, RMB, L CTRL, SPACE, L SHIFT
 #### Alt. controls: Arrows, RMB, SPACE, R SHIFT, R CTRL
 
+### ***Sharp Engine*** have a *Verlet integration* object creator and supports changing it`s color
+
+## x(n + 1) = 2x(n) - x(n - 1) + a(n) * (Δt)^2             // (n + Δt), *n* might be = t
+
+
 # © Oxygen1 2025 ALL RIGHTS RESERVED
