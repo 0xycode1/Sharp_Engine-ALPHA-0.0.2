@@ -285,7 +285,7 @@ int main(void) {
 
             setupModel();
         }
-        ImGui::Text("{HAVEN`T DONE YET!}");
+        ImGui::Text("(HAVEN`T done YET!)");
         ImGui::Text("");
         if (ImGui::Button("Refresh")) {
             meshes.clear();
