@@ -298,8 +298,11 @@ int main(void) {
             setupModel();
 
 
+            std::cout << std::endl;
+            std::cout << "{TextureIDs}" << std::endl;
+            std::cout << std::endl;
 
-
+            
             for (Mesh& mesh : meshes) {
                 for (unsigned int i = 0; i < mesh.textureIds.size(); i++) { // i <= textureIds.size()
                     glActiveTexture(GL_TEXTURE0 + i);
