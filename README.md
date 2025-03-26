@@ -5,7 +5,7 @@
 
 
 ________________________________________________________________________________________________________________________________________________________________________________________________
-## ***Sharp Engine*** is an *OpenGL 3-4* gametool with object loader made by *Assimp* library 
+## ***Sharp Engine*** is an *OpenGL 3-4* gametool with an object loader made by *Assimp* library 
 
 ![image](https://github.com/user-attachments/assets/e9a7f600-a4a6-492e-8caf-46b68649d966)
 
