@@ -1,5 +1,3 @@
-// Sharp Engine
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -10,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 //#include <GL/freeglut.h>
+#include <GL/glut.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>         
 #include <assimp/postprocess.h>
@@ -17,26 +16,25 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#include "Camera.h"
-#include "ObjectRender.h"
-#include "Controls.h"
+#include "camera.h"
+#include "objectRender.h"
+#include "controls.h"
+#include "audio.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include <cmath>
 
-//#include <windows.h>
-//#include <commdlg.h>
-
-/* // Change SCREEN PREFERENCES in 'Camera.h'
+/*  Change SCREEN PREFERENCES in 'Camera.h'
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 */
 
 
 
-glm::vec3 modelColor(1.0f, 1.0f, 1.0f);
+
+glm::vec3 modelColor(0.5f, 0.5f, 0.5f);
 
 
 float modelScaleX = 1.0f;
@@ -49,12 +47,28 @@ static float rotationY = 0.0f;
 static float rotationZ = 0.0f;
 
 
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glBegin(GL_QUADS);
+
+    glVertex2f(-0.5f, -0.5f);
+    glVertex2f(-0.5f, 0.5f);
+    glVertex2f(0.5f, 0.5f);
+    glVertex2f(0.5f, -0.5f);
+
+    glEnd();
+    glFlush();
+}
 
 
-
-int main(void) {
+int main(int argc, char** argv) { // FOR GLUT: (int argc, char** argv)
     std::cout << "[ Sharp Engine ]" << std::endl;
 
+
+    //soundPlayer("audio.wav");
+
+
+    //drawGrid();
 
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW." << std::endl;
@@ -66,7 +80,13 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    //glutInit(&argc, argv);
+    //glutCreateWindow("hi)");
+
     GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sharp Engine", NULL, NULL);
+
+    //glutDisplayFunc(display);
+    
 
     if (!window) {
         std::cerr << "Failed to create GLFW window." << std::endl;
@@ -74,7 +94,6 @@ int main(void) {
 
         return -1;
     }
-
 
 
 
@@ -97,11 +116,13 @@ int main(void) {
 
     // Setup model preferences
     setupShader();
-    //loadModel("ShadowSonic/Shadow.obj"); // Path to your object (1)
     loadModel("psychopomp/C'venash.obj");
-    //loadModel("xyz/XYZ.obj");
     setupModel();
 
+    setupGridShader();
+    setupGridData();
+
+    transformLoc = glGetUniformLocation(grid_shader_program, "transform");
 
 
     if (vertices.empty() || indices.empty()) {
@@ -115,6 +136,9 @@ int main(void) {
     viewLoc = glGetUniformLocation(shader_program, "view");
     projLoc = glGetUniformLocation(shader_program, "projection");
     glUniform1i(glGetUniformLocation(shader_program, "ourTexture"), 0); // Associate the texture sampler with texture unit 0
+
+
+
 
 
     //std::cout << std::endl;
@@ -147,7 +171,6 @@ int main(void) {
     std::cout << "Running..." << std::endl;
 
 
-
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -155,17 +178,18 @@ int main(void) {
 
         processInput(window);
 
+
         // Clear buffer
-        glClearColor(0.25f, 0.25f, 0.25f, 1.0f); // screen color
+        glClearColor(0.22f, 0.22f, 0.22f, 1.0f); // screen color (background color)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glUseProgram(shader_program);
+        glUseProgram(shader_program); // and grid_sshader_program
+        // glUseProgram(grid_shader_program);
+
 
         ImGui_ImplGlfw_NewFrame();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui::NewFrame();
-
-
 
 
 
@@ -195,8 +219,6 @@ int main(void) {
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 
-
-
         for (Mesh& mesh : meshes) {
             for (size_t i = 0; i < mesh.textureIds.size(); i++) { // i <= mesh.textureIds.size()
                 glActiveTexture(GL_TEXTURE0 + i);
@@ -205,6 +227,7 @@ int main(void) {
                 //glUniform1i(glGetUniformLocation(shader_program, "TextureIndex"), i);
                 std::string samplerName = "ourTextures[" + std::to_string(i) + "]";
                 glUniform1i(glGetUniformLocation(shader_program, samplerName.c_str()), i);
+                glUniform1i(glGetUniformLocation(grid_shader_program, samplerName.c_str()), i);
 
 
                 //std::cout << "Texture " << i << ": ID " << mesh.textureIds[i] << std::endl;
@@ -217,56 +240,43 @@ int main(void) {
         }
 
 
-        /*
-        //for (size_t i = 0; i <= meshes[i].textureIds.size(); i++) {
-        for (size_t i = 0; i < textureIds.size(); i++) {
-            glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(GL_TEXTURE_2D, textureIds[i]);
-
-            //glUniform1i(glGetUniformLocation(shader_program, "TextureIndex"), i);
-            glUniform1i(glGetUniformLocation(shader_program, ("ourTextures[" + std::to_string(i) + "]").c_str()), i);
-        }
-
-        //glBindVertexArray(0);
-
-        for (Mesh& mesh : meshes) {
-            //setupMesh(mesh);
-            glBindVertexArray(mesh.VAO); // (vao) //// (mesh.VAO)
-        }
-        */
-
         bool drawObject = true;
         if (drawObject)
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 
-
-
-
-
         // settings buttons
         ImGui::Begin("Settings");
         ImGui::Text("[CHECK CODE FOR DETAILS]");
+
         ImGui::Text("");
         //ImGui::Checkbox("DrawObject", &drawObject);
+        // 
         // rotation button
         ImGui::Text("Rotation");
         ImGui::SliderFloat("X-axis(R)", &rotationX, 0, 1, "%1.0f");
         ImGui::SliderFloat("Y-axis(R)", &rotationY, 0, 1, "%1.0f");
         ImGui::SliderFloat("Z-axis(R)", &rotationZ, 0, 1, "%1.0f");
+
         // size
         ImGui::Text("");
+
         ImGui::Text("Size");
         ImGui::SliderFloat("X-axis(S)", &modelScaleX, 0.1f, 10.0f);
         ImGui::SliderFloat("Y-axis(S)", &modelScaleY, 0.1f, 10.0f);
         ImGui::SliderFloat("Z-axis(S)", &modelScaleZ, 0.1f, 10.0f);
+
         // color (for opengl objects)
+        ImGui::Text("");
+
+        ImGui::Text("Color");
         ImGui::ColorEdit3("[GL]Color", glm::value_ptr(modelColor));
         // load objects
         ImGui::Text("");
         if (ImGui::Button("Load Object")) {
             setupShader();
-            loadModel("quake_ranger/player.obj"); // "psychopomp/C'venash.obj" "HeatherMason/Heather.obj"  "Alice/Alice.obj"
+            loadModel("quake_ranger/player.obj"); // "psychopomp/C'venash.obj" "HeatherMason/Heather.obj"  "Alice/Alice.obj" "quake_ranger/player.obj"
+            //loadModel("HeatherMason/Heather.obj");
 
             std::cout << std::endl;
             std::cout << "{TextureIDs}" << std::endl;
@@ -287,7 +297,7 @@ int main(void) {
         }
         ImGui::Text("(HAVEN`T done YET!)");
         ImGui::Text("");
-        if (ImGui::Button("Refresh")) {
+        if (ImGui::Button("Refresh (F5)")) {
             meshes.clear();
             vertices.clear();
             indices.clear();
@@ -297,12 +307,51 @@ int main(void) {
             loadModel("psychopomp/C'venash.obj");
             setupModel();
 
+            modelScaleX = 1.0f;
+            modelScaleY = 1.0f;
+            modelScaleZ = 1.0f;
+
+            rotationX = 0.0f;
+            rotationY = 0.0f;
+            rotationZ = 0.0f;
 
             std::cout << std::endl;
             std::cout << "{TextureIDs}" << std::endl;
             std::cout << std::endl;
 
-            
+
+            for (Mesh& mesh : meshes) {
+                for (unsigned int i = 0; i < mesh.textureIds.size(); i++) { // i <= textureIds.size()
+                    glActiveTexture(GL_TEXTURE0 + i);
+                    glBindTexture(GL_TEXTURE_2D, mesh.textureIds[i]);
+
+                    std::cout << "TextureID " << i << ": " << mesh.textureIds[i] << std::endl;
+                }
+            }
+        }
+
+        if (keys[GLFW_KEY_F5]) {
+            meshes.clear();
+            vertices.clear();
+            indices.clear();
+            textureIds.clear();
+
+            setupShader();
+            loadModel("psychopomp/C'venash.obj");
+            setupModel();
+
+            modelScaleX = 1.0f;
+            modelScaleY = 1.0f;
+            modelScaleZ = 1.0f;
+
+            rotationX = 0.0f;
+            rotationY = 0.0f;
+            rotationZ = 0.0f;
+
+            std::cout << std::endl;
+            std::cout << "{TextureIDs}" << std::endl;
+            std::cout << std::endl;
+
             for (Mesh& mesh : meshes) {
                 for (unsigned int i = 0; i < mesh.textureIds.size(); i++) { // i <= textureIds.size()
                     glActiveTexture(GL_TEXTURE0 + i);
@@ -316,46 +365,27 @@ int main(void) {
 
 
         ImGui::Text("");
-        if (ImGui::Button("Clear buffers")) {
+
+        if (ImGui::Button("Clear buffers (C)")) {
             meshes.clear();
             vertices.clear();
             indices.clear();
             textureIds.clear();
         }
+
         ImGui::Text("");
 
-
-
-
-        /*
-        std::string OpenFileDialog() {
-            OPENFILENAME ofn;       // structure for open object
-            char szFile[260];      // buffer
-
-            ZeroMemory(&ofn, sizeof(ofn));
-            ofn.lStructSize = sizeof(ofn);
-            ofn.lpstrFilter = "Model Files\0*.obj;*.fbx;*.dae\0All Files\0*.*\0";
-            ofn.lpstrFile = szFile;
-            ofn.nMaxFile = sizeof(szFile);
-            ofn.lpstrTitle = "Select a model file";
-            ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-            // dialog window
-            if (GetOpenFileName(&ofn)) {
-                return std::string(ofn.lpstrFile);
-            }
-            return "";
+        if (ImGui::Button("Audio Player")) {
+            soundPlayer("sharpengine.wav");
         }
+        ImGui::Text("(RIGHT NOW audio works ONLY in Terminal!)");
 
-        if (ImGui::Button("Load Object")) {
-            std::string filename = OpenFileDialog();
-
-            if (!filename.empty()) {
-                loadModel(filename);
-            }
+        if (keys[GLFW_KEY_C]) {
+            meshes.clear();
+            vertices.clear();
+            indices.clear();
+            textureIds.clear();
         }
-        */
-
 
 
         ImGui::End();
@@ -364,14 +394,19 @@ int main(void) {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
+
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+
+
+    //glutMainLoop();
+
 
     // Clear resources
     for (Mesh& mesh : meshes) {
@@ -379,17 +414,16 @@ int main(void) {
         glfwTerminate();
     }
 
-
-
+    
     std::cout << std::endl;
     int maxTextures;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextures);
     std::cout << "MAX textures: " << maxTextures << std::endl;
 
 
-
     std::cout << std::endl;
     std::cout << "End." << std::endl;
+
 
     return 0;
 }
