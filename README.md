@@ -33,8 +33,8 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________________________________________________________________________________________________________
 ## Controls
-#### Controls: W A S D, RMB, L CTRL, SPACE, L SHIFT
-#### Alt. controls: Arrows, RMB, SPACE, R SHIFT, R CTRL, F5
+#### Controls: W A S D, RMB, L CTRL, SPACE, L SHIFT, F5
+#### Alt. controls: Arrows, RMB, SPACE, R SHIFT, R CTRL
 
 
 
