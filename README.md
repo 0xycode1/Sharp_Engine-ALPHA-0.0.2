@@ -1,4 +1,4 @@
-# Sharp Engine [PRE-ALPHA 0.0.1]
+# Sharp Engine [PRE-ALPHA 0.0.2]
 #### Prev. name: ParticleGL
 
 ![SE logo](https://github.com/user-attachments/assets/af8632f7-37c6-4222-893e-dbc644a85c29)
@@ -23,6 +23,7 @@ ________________________________________________________________________________
 + GLUT
 + STB_IMAGE
 + KHR
++ SNDFILE
 ________________________________________________________________________________________________________________________________________________________________________________________________
 
 ![image](https://github.com/user-attachments/assets/ed104acf-eca1-4a64-b5c6-77ccad72a207)
