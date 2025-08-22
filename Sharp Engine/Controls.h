@@ -13,11 +13,12 @@
 #include <assimp/scene.h>         
 #include <assimp/postprocess.h>
 
-#include "Camera.h"
-#include "ObjectRender.h"
+#include "camera.h"
+#include "objectRender.h"
 
 #include <iostream>
 #include <vector>
+//#include <cmath>
 
 
 bool rightMouseButtonPressed = false;
@@ -80,11 +81,19 @@ void processInput(GLFWwindow* window) {
 		if (keys[GLFW_KEY_W]) {
 			if (keys[GLFW_KEY_LEFT_SHIFT]) {
 				cameraPos += cameraAcceleration * cameraFront;
-			}
-			else {
+			} else {
 				cameraPos += cameraSpeed * cameraFront;
 			}
 		}
+
+		if (keys[GLFW_KEY_S]) {
+			if (keys[GLFW_KEY_LEFT_SHIFT]) {
+				cameraPos -= cameraAcceleration * cameraFront;
+			} else {
+				cameraPos -= cameraSpeed * cameraFront;
+			}
+		}
+
 		if (keys[GLFW_KEY_S])
 			cameraPos -= cameraSpeed * cameraFront;
 		if (keys[GLFW_KEY_A])
