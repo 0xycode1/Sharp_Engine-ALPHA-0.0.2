@@ -1,0 +1,5 @@
+____CHANGES in 0.0.2____
+
+- Audioplayer added. You can paly any sound in wav, mp3, ogg through the engine
+- 'Refresh' functon updated. Now it won't only refresh model itself, but return basic model settings too
+- 'Refresh' function binded to F5
