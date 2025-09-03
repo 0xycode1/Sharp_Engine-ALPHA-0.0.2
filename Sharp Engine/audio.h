@@ -12,7 +12,6 @@
 
 #include "objectRender.h" // POSSIBLE if-else condition to fix stopping program when the sound is playing
 
-
 void soundPlayer(const char *filename) {
 	ALCdevice* device = alcOpenDevice(nullptr);
 
@@ -51,19 +50,15 @@ void soundPlayer(const char *filename) {
 	else
 		return;
 
-
 	alBufferData(buffer, format, samples.data(), samples.size() * sizeof(short), sfInfo.samplerate);
 
 	ALuint source;
 	alGenSources(1, &source);
 
 	alSourcei(source, AL_BUFFER, buffer);
-
 	//alSourcei(source, AL_LOOPING, AL_TRUE); // loop options
 
-
 	alSourcePlay(source);
-
 
 	ALint state;
 
@@ -78,5 +73,4 @@ void soundPlayer(const char *filename) {
 	alcCloseDevice(device);
 }
 
-
-#endif // Audio.h
+#endif // audio.h
